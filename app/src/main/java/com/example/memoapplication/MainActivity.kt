@@ -2,7 +2,9 @@ package com.example.memoapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,7 +48,6 @@ class MainActivity : AppCompatActivity() {
 
         adapter.itemClick = object: MainAdapter.ItemClick {
             override fun onClick(view: View, data: memoInfo, position: Int) {
-//                Toast.makeText(this@MainActivity, "${itemList[position].title}", Toast.LENGTH_SHORT).show()
                 val temp = itemList[position].title.toString()
                 firebaseDatabase.reference.child("memo").child(temp).child("comment")
                     .addValueEventListener(object : ValueEventListener {
@@ -61,8 +62,35 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.addMemo.setOnClickListener {
-            startActivity(Intent(this, AddMemoActivity::class.java))
+        // 팝업 메뉴
+        binding.menu.setOnClickListener {
+            val popupMenu = PopupMenu(applicationContext, it)
+            menuInflater.inflate(R.menu.memo_menu, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener(object :PopupMenu.OnMenuItemClickListener {
+                override fun onMenuItemClick(p0: MenuItem?): Boolean {
+                    when (p0?.itemId) {
+                        R.id.addd_memo -> {
+                            startActivity(Intent(this@MainActivity, AddMemoActivity::class.java))
+                        }
+                        R.id.delete_memo -> {
+                            startActivity(Intent(this@MainActivity, DeleteMemoActivity::class.java))
+                        }
+                    }
+                    return false
+                }
+            })
+            popupMenu.show()
+        }
+    }
+
+    private var backPressedTime : Long = 0
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() > backPressedTime + 2000) {
+            backPressedTime = System.currentTimeMillis()
+            Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르면 종료", Toast.LENGTH_SHORT).show()
+            return
+        } else if (System.currentTimeMillis() <= backPressedTime + 2000) {
+            finish()
         }
     }
 }

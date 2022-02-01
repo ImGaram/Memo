@@ -7,9 +7,13 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/MemoApplication/app/src/main/res/drawable/d.xml" value="0.265625" />
         <entry key="..\:/Users/user/AndroidStudioProjects/MemoApplication/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.265625" />
         <entry key="..\:/Users/user/AndroidStudioProjects/MemoApplication/app/src/main/res/layout/activity_add_memo.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/MemoApplication/app/src/main/res/layout/activity_delete_memo.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/MemoApplication/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/MemoApplication/app/src/main/res/layout/activity_memo_info.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/MemoApplication/app/src/main/res/layout/custom_dialog_delete_memo.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/MemoApplication/app/src/main/res/layout/recyclerview_item_delete_info.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/MemoApplication/app/src/main/res/layout/recyclerview_item_main_info.xml" value="0.264" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/MemoApplication/app/src/main/res/menu/memo_menu.xml" value="0.24947916666666667" />
       </map>
     </option>
   </component>
