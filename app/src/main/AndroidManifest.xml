@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MemoApplication">
         <activity
+            android:name=".ModifyMemoActivity"
+            android:exported="false" />
+        <activity
             android:name=".DeleteMemoActivity"
             android:exported="false" />
         <activity

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ModifyMemoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/teal_200"
+            android:title="메모 수정">
+
+            <ImageView
+                android:id="@+id/back_modify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/ic_baseline_arrow_back_ios_new_24" />
+        </Toolbar>
+
+        <TextView
+            android:id="@+id/modify_memo_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이름 : memo name"
+            android:textSize="23sp"
+            android:layout_margin="30dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="30dp"
+                android:paddingBottom="10dp"
+                android:layout_weight="1"
+                android:text="내용"
+                android:textSize="23sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/modify_comment_editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="15"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="내용을 작성해주세요"
+                android:inputType="textMultiLine"
+                android:paddingStart="30dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="30dp"
+                android:scrollHorizontally="false" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/save_modify_btn"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="저장" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

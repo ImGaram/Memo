@@ -20,6 +20,11 @@ class MainAdapter(private val items: MutableList<memoInfo>): RecyclerView.Adapte
     }
     var itemClick: ItemClick? = null
 
+    interface ItemLongClick {
+        fun onLongClick(view:View, data: memoInfo, position: Int)
+    }
+    var itemLongClick: ItemLongClick? = null
+
     override fun onBindViewHolder(holder: MainAdapter.ViewHolder, position: Int) {
         holder.bind(items[position])
     }
@@ -41,8 +46,14 @@ class MainAdapter(private val items: MutableList<memoInfo>): RecyclerView.Adapte
                 itemView.setOnClickListener {
                     itemClick?.onClick(itemView, item, pos)
                 }
-            }
 
+                itemView.setOnLongClickListener(object : View.OnLongClickListener {
+                    override fun onLongClick(p0: View?): Boolean {
+                        itemLongClick?.onLongClick(itemView, item, pos)
+                        return false
+                    }
+                })
+            }
         }
     }
 }

@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {  }
         })
 
+        // 메모 보기
         adapter.itemClick = object: MainAdapter.ItemClick {
             override fun onClick(view: View, data: memoInfo, position: Int) {
                 val temp = itemList[position].title.toString()
@@ -59,6 +60,36 @@ class MainActivity : AppCompatActivity() {
                         }
                         override fun onCancelled(error: DatabaseError) {  }
                     })
+            }
+        }
+
+        // 메모 수정
+        adapter.itemLongClick = object : MainAdapter.ItemLongClick {
+            override fun onLongClick(view: View, data: memoInfo, position: Int) {
+                val modifyTemp = itemList[position].title.toString()
+                val modifyMenu = PopupMenu(applicationContext, view)
+                menuInflater.inflate(R.menu.memo_modify, modifyMenu.menu)
+                modifyMenu.setOnMenuItemClickListener(object :PopupMenu.OnMenuItemClickListener {
+                    override fun onMenuItemClick(p0: MenuItem?): Boolean {
+                        when (p0?.itemId) {
+                            R.id.modify_memo -> {
+                                firebaseDatabase.reference.child("memo").child(modifyTemp).child("comment")
+                                    .addValueEventListener(object :ValueEventListener {
+                                        override fun onDataChange(snapshot: DataSnapshot) {
+                                            val modifyValue: String? = snapshot.getValue(String::class.java)
+                                            val intent = Intent(this@MainActivity, ModifyMemoActivity::class.java)
+                                                .putExtra("title", modifyTemp).putExtra("comment", modifyValue)
+                                            startActivity(intent)
+                                        }
+                                        override fun onCancelled(error: DatabaseError) {}
+                                    })
+                            }
+                        }
+                        return false
+                    }
+
+                })
+                modifyMenu.show()
             }
         }
 
