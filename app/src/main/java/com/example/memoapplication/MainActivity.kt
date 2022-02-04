@@ -2,6 +2,7 @@ package com.example.memoapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
@@ -91,6 +92,11 @@ class MainActivity : AppCompatActivity() {
                 })
                 modifyMenu.show()
             }
+        }
+
+        // 검색 메뉴
+        binding.search.setOnClickListener {
+            startActivity(Intent(this, SearchMemoActivity::class.java))
         }
 
         // 팝업 메뉴

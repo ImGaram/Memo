@@ -37,6 +37,8 @@ class AddMemoActivity : AppCompatActivity() {
 
             if (TextUtils.isEmpty(title) || TextUtils.isEmpty(comment)) {
                 Toast.makeText(this, "비면 안됨", Toast.LENGTH_SHORT).show()
+            } else if (title.length > 9) {
+                Toast.makeText(this, "이름이 너무 김", Toast.LENGTH_SHORT).show()
             } else {
                 addData(title, comment, date)
             }
