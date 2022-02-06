@@ -3,13 +3,17 @@ package com.example.memoapplication.recyclerview
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memoapplication.R
 import com.example.memoapplication.data.memoInfo
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class MainAdapter(private val items: MutableList<memoInfo>): RecyclerView.Adapter<MainAdapter.ViewHolder>() {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_item_main_info, parent, false)
         return ViewHolder(view)

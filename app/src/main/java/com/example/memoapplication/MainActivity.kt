@@ -1,13 +1,17 @@
 package com.example.memoapplication
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memoapplication.data.memoInfo
@@ -51,15 +55,59 @@ class MainActivity : AppCompatActivity() {
         adapter.itemClick = object: MainAdapter.ItemClick {
             override fun onClick(view: View, data: memoInfo, position: Int) {
                 val temp = itemList[position].title.toString()
-                firebaseDatabase.reference.child("memo").child(temp).child("comment")
-                    .addValueEventListener(object : ValueEventListener {
+
+                firebaseDatabase.reference.child("memo").child(temp).child("lock")
+                    .addValueEventListener(object :ValueEventListener{
                         override fun onDataChange(snapshot: DataSnapshot) {
-                            val value: String? = snapshot.getValue(String::class.java)
-                            val intent = Intent(this@MainActivity, MemoInfoActivity::class.java)
-                                .putExtra("data",value).putExtra("title", temp)
-                            startActivity(intent)
+                            val solveValue = snapshot.getValue(String::class.java)
+                            if (!solveValue.equals("")) {
+                                val dialog = LayoutInflater.from(this@MainActivity).inflate(R.layout.custom_dialog_solving_memo, null)
+                                val mBuilder = AlertDialog.Builder(this@MainActivity)
+                                    .setView(dialog)
+                                    .setTitle("암호 입력")
+                                val customDialog = mBuilder.show()
+                                val yesBtn = customDialog.findViewById<AppCompatButton>(R.id.yes_btn_solve)
+                                val noBtn = customDialog.findViewById<AppCompatButton>(R.id.no_btn_solve)
+                                val solvingPw = customDialog.findViewById<EditText>(R.id.pw_solve_editText)
+
+                                yesBtn.setOnClickListener {
+                                    val pw = solvingPw.text.toString()
+                                    if (pw == solveValue) {
+                                        Toast.makeText(this@MainActivity, "암호가 알맞습니다", Toast.LENGTH_SHORT).show()
+                                        customDialog.dismiss()
+                                        firebaseDatabase.reference.child("memo").child(temp).child("comment")
+                                            .addValueEventListener(object : ValueEventListener {
+                                                override fun onDataChange(snapshot: DataSnapshot) {
+                                                    val value: String? = snapshot.getValue(String::class.java)
+                                                    val intent = Intent(this@MainActivity, MemoInfoActivity::class.java)
+                                                        .putExtra("data",value).putExtra("title", temp)
+                                                    startActivity(intent)
+                                                }
+                                                override fun onCancelled(error: DatabaseError) {  }
+                                            })
+                                    } else {
+                                        solvingPw.text = null
+                                        Toast.makeText(this@MainActivity, "암호가 올바르지 않아요", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+
+                                noBtn.setOnClickListener {
+                                    customDialog.dismiss()
+                                }
+                            } else {
+                                firebaseDatabase.reference.child("memo").child(temp).child("comment")
+                                    .addValueEventListener(object : ValueEventListener {
+                                        override fun onDataChange(snapshot: DataSnapshot) {
+                                            val value: String? = snapshot.getValue(String::class.java)
+                                            val intent = Intent(this@MainActivity, MemoInfoActivity::class.java)
+                                                .putExtra("data",value).putExtra("title", temp)
+                                            startActivity(intent)
+                                        }
+                                        override fun onCancelled(error: DatabaseError) {  }
+                                    })
+                            }
                         }
-                        override fun onCancelled(error: DatabaseError) {  }
+                        override fun onCancelled(error: DatabaseError) {}
                     })
             }
         }
@@ -97,6 +145,11 @@ class MainActivity : AppCompatActivity() {
         // 검색 메뉴
         binding.search.setOnClickListener {
             startActivity(Intent(this, SearchMemoActivity::class.java))
+        }
+
+        // 잠금 메뉴
+        binding.lock.setOnClickListener {
+            startActivity(Intent(this, LockMemoActivity::class.java))
         }
 
         // 팝업 메뉴

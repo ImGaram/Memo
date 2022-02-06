@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MemoApplication">
         <activity
+            android:name=".LockMemoActivity"
+            android:exported="false" />
+        <activity
             android:name=".SearchMemoActivity"
             android:exported="false" />
         <activity
