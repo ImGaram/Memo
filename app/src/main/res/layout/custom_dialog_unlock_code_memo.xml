@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/pw_unlock_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="암호를 혜제하시겠습니까?"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:inputType="number"
+        android:layout_margin="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/yes_btn_unlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="네"/>
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/no_btn_unlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아니요"/>
+    </LinearLayout>
+
+</LinearLayout>

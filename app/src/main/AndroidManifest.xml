@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MemoApplication">
         <activity
+            android:name=".UnLockMemoActivity"
+            android:exported="false" />
+        <activity
             android:name=".LockMemoActivity"
             android:exported="false" />
         <activity

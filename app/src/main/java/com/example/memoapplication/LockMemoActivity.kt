@@ -1,16 +1,17 @@
 package com.example.memoapplication
 
 import android.app.AlertDialog
-import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memoapplication.data.memoInfo
@@ -37,8 +38,6 @@ class LockMemoActivity : AppCompatActivity() {
         firebaseDatabase = FirebaseDatabase.getInstance()
         recyclerView = findViewById(R.id.recyclerview_lock)
         val adapter = LockAdapter(itemList)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
 
         firebaseDatabase.reference.child("memo").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -49,50 +48,75 @@ class LockMemoActivity : AppCompatActivity() {
                 }
                 adapter.notifyDataSetChanged()
             }
-            override fun onCancelled(error: DatabaseError) {  }
+
+            override fun onCancelled(error: DatabaseError) {}
         })
 
-        adapter.itemClick = object: LockAdapter.ItemClick {
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        adapter.itemClick = object : LockAdapter.ItemClick {
             override fun onClick(view: View, data: memoInfo, position: Int) {
                 val temp = itemList[position].title.toString()
+                val lockRef = firebaseDatabase.reference.child("memo").child(temp).child("lock")
 
-                firebaseDatabase.reference.child("memo").child(temp).child("lock")
-                    .addValueEventListener(object :ValueEventListener{
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val unlockValue = snapshot.getValue(String::class.java)
-                            if (!unlockValue.equals("")) {
-                                Toast.makeText(this@LockMemoActivity, "이미 잠금 설정 됨", Toast.LENGTH_SHORT).show()
-                            } else {
-                                val dialog = LayoutInflater.from(this@LockMemoActivity).inflate(R.layout.custom_dialog_lock_memo, null)
-                                val mBuilder = AlertDialog.Builder(this@LockMemoActivity)
-                                    .setView(dialog)
-                                    .setTitle("암호 설정")
-                                val customDialog = mBuilder.show()
+                lockRef.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val unlockValue = snapshot.getValue(String::class.java)
 
-                                val yesBtn = customDialog.findViewById<AppCompatButton>(R.id.yes_btn_lock)
-                                val noBtn = customDialog.findViewById<AppCompatButton>(R.id.no_btn_lock)
-                                val lockRef = firebaseDatabase.reference.child("memo").child(temp).child("lock")
+                        if (unlockValue == "") {
+                            val dialog = LayoutInflater.from(this@LockMemoActivity)
+                                .inflate(R.layout.custom_dialog_lock_memo, null)
+                            val mBuilder = AlertDialog.Builder(this@LockMemoActivity)
+                                .setView(dialog)
+                                .setTitle("암호 설정")
+                            val customDialog = mBuilder.show()
 
-                                yesBtn.setOnClickListener {
-                                    val lockEditText = customDialog.findViewById<EditText>(R.id.pw_lock_editText)
-                                    val pw = lockEditText.text.toString()
-                                    lockRef.setValue(pw)
-                                        .addOnCompleteListener {
-                                            if (it.isSuccessful) {
-                                                Toast.makeText(this@LockMemoActivity, "설정 되었습니다.", Toast.LENGTH_SHORT).show()
-                                                customDialog.dismiss()
-                                            }
+                            val yesBtn = customDialog.findViewById<AppCompatButton>(R.id.yes_btn_lock)
+                            val noBtn = customDialog.findViewById<AppCompatButton>(R.id.no_btn_lock)
+
+                            yesBtn.setOnClickListener {
+                                val lockEditText = customDialog.findViewById<EditText>(R.id.pw_lock_editText)
+                                val pw = lockEditText.text.toString()
+                                lockRef.setValue(pw)
+                                    .addOnCompleteListener {
+                                        if (it.isSuccessful) {
+                                            Toast.makeText(this@LockMemoActivity, "설정 되었습니다.", Toast.LENGTH_SHORT).show()
+                                            customDialog.dismiss()
+                                            return@addOnCompleteListener
                                         }
-                                }
+                                    }
+                                return@setOnClickListener
+                            }
 
-                                noBtn.setOnClickListener {
-                                    customDialog.dismiss()
-                                }
+                            noBtn.setOnClickListener {
+                                customDialog.dismiss()
                             }
                         }
-                        override fun onCancelled(error: DatabaseError) {}
-                    })
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {}
+                })
             }
+        }
+
+        binding.lockMore.setOnClickListener {
+            val popupMenu = PopupMenu(applicationContext, it)
+            menuInflater.inflate(R.menu.memo_unlock, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
+                override fun onMenuItemClick(p0: MenuItem?): Boolean {
+                    when(p0?.itemId) {
+                        R.id.modify_lock -> {
+                            Toast.makeText(this@LockMemoActivity, "추가 예정", Toast.LENGTH_SHORT).show()
+                        }
+                        R.id.unlock -> {
+                            startActivity(Intent(this@LockMemoActivity, UnLockMemoActivity::class.java))
+                        }
+                    }
+                    return false
+                }
+            })
+            popupMenu.show()
         }
 
         binding.backLock.setOnClickListener {

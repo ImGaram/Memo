@@ -7,26 +7,17 @@
     android:layout_height="match_parent"
     android:background="#FFE4C4"
     android:orientation="vertical"
-    tools:context=".LockMemoActivity">
+    tools:context=".UnLockMemoActivity">
 
     <Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
         android:titleTextColor="@color/white"
-        android:title="암호 추가">
+        android:title="암호 삭제">
 
         <ImageView
-            android:id="@+id/lock_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginEnd="15dp"
-            app:tint="@color/white"
-            android:src="@drawable/ic_baseline_more_vert_24" />
-
-        <ImageView
-            android:id="@+id/back_lock"
+            android:id="@+id/back_unlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -36,7 +27,7 @@
     </Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_lock"
+        android:id="@+id/recyclerview_unlock"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
