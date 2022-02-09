@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFE4C4"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@color/black"
+        android:titleTextColor="@color/white"
+        android:textColor="@color/white"
+        android:textSize="23sp"
+        android:gravity="center"
+        android:text="메모" />
+
+    <Button
+        android:id="@+id/move_main_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="메모로 이동"/>
+
+    <Button
+        android:id="@+id/move_git"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="임가람 github"/>
+</LinearLayout>

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,10 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.memoapplication.data.memoInfo
 import com.example.memoapplication.databinding.ActivityMainBinding
 import com.example.memoapplication.recyclerview.MainAdapter
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
 

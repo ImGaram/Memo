@@ -37,7 +37,9 @@ class LockMemoActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerview_lock)
         val adapter = LockAdapter(itemList)
 
-        firebaseDatabase.reference.child("memo").addValueEventListener(object : ValueEventListener {
+        val ref = firebaseDatabase.reference.child("memo")
+
+        ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 itemList.clear()
                 for (datasnapshot in snapshot.children) {
@@ -56,7 +58,7 @@ class LockMemoActivity : AppCompatActivity() {
         adapter.itemClick = object : LockAdapter.ItemClick {
             override fun onClick(view: View, data: memoInfo, position: Int) {
                 val temp = itemList[position].title.toString()
-                val lockRef = firebaseDatabase.reference.child("memo").child(temp).child("lock")
+                val lockRef = ref.child(temp).child("lock")
 
                 lockRef.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -124,7 +126,7 @@ class LockMemoActivity : AppCompatActivity() {
                             modifyRecyclerview.layoutManager = LinearLayoutManager(this@LockMemoActivity)
                             modifyRecyclerview.adapter = modifyAdapter
 
-                            firebaseDatabase.reference.child("memo").addValueEventListener(object : ValueEventListener {
+                            ref.addValueEventListener(object : ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
                                     lockingList.clear()
                                     for (datasnapshot in snapshot.children) {
@@ -154,7 +156,7 @@ class LockMemoActivity : AppCompatActivity() {
                             nextBtn.setOnClickListener {
                                 customModifyDialog.dismiss()
 
-                                val changeCodeRef = firebaseDatabase.reference.child("memo").child(selectedItem.toString())
+                                val changeCodeRef = ref.child(selectedItem.toString())
                                 changeCodeRef.child("lock").addValueEventListener(object :ValueEventListener{
                                     override fun onDataChange(snapshot: DataSnapshot) {
                                         val pw = snapshot.getValue(String::class.java)
